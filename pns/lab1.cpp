@@ -14,9 +14,8 @@ int main() {
 				cout << "(" << i << "," << j << ")" << ",";
 			}
 		}
+		cout << endl;
 	}
-	else {
-		cout << "Give Integer between 75 to 85 as input";
-	}
+	else cout << "Give Integer between 75 to 85 as input" << endl;
 	return 0;
 }
