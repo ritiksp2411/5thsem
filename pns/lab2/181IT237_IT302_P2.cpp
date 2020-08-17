@@ -8,16 +8,26 @@ int main() {
     myfile.open("181IT237_IT302_P2_Output_TC1.txt");
     string a[n];
     cout << "Enter the names: " << endl;
-    for(int i=0; i<n; i++) cin>>a[i];
+    for(int i=0; i<n; i++){
+        cin>>a[i];
+        if((a[i][0]>='a' && a[i][0]<='z') || (a[i][0]>='A' && a[i][0]>='Z')) continue;
+        else{
+            myfile << "Invalid input";
+            cout << "Invalid input" << endl;
+            return 0;
+        } 
+    }
     int per[n],mistake[n];
-    cout << "Enter the percentage: "<< endl;
-    for(int i=0; i<n; i++) cin >>per[i];
     int count=0;
-    for(int i=0; i<n; i++) count+=per[i];
-    if(count!=100){
-        myfile << "Invalid input";
-        cout << "Invalid input" << endl;
-        return 0;
+    cout << "Enter the percentage: "<< endl;
+    for(int i=0; i<n; i++){
+        cin >>per[i];
+        count+=per[i];
+        if(count>=100 && i!=n-1){
+            myfile << "Invalid input";
+            cout << "Invalid input" << endl;
+            return 0; 
+        } 
     }
     cout << "Enter the number of packages after which they will commit the mistake: "<< endl;
     for(int i=0; i<n; i++) cin >>mistake[i];
