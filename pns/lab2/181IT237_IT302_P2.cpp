@@ -10,7 +10,7 @@ int main() {
     cout << "Enter the names: " << endl;
     for(int i=0; i<n; i++){
         cin>>a[i];
-        if((a[i][0]>='a' && a[i][0]<='z') || (a[i][0]>='A' && a[i][0]>='Z')) continue;
+        if((a[i][0]>='a' && a[i][0]<='z') || (a[i][0]>='A' && a[i][0]<='Z')) continue;
         else{
             myfile << "Invalid input";
             cout << "Invalid input" << endl;
@@ -29,17 +29,27 @@ int main() {
             return 0; 
         } 
     }
+    if(count!=100){
+        myfile << "Invalid input";
+        cout << "Invalid input" << endl;
+        return 0; 
+    }
     cout << "Enter the number of packages after which they will commit the mistake: "<< endl;
     for(int i=0; i<n; i++) cin >>mistake[i];
     cout << "Enter the inpector name for which we want to know the probability: " << endl;
     string target;
     cin >> target;
-    int index=0;
+    int index=INT_MAX;
     for(int i=0; i<n; i++){
         if(target==a[i]){
             index=i;
             break;
         }
+    }
+    if(index==INT_MAX){
+        myfile << "Invalid input";
+        cout << "Invalid input" << endl;
+        return 0;
     } 
     double prob=0;
     double total=0;
