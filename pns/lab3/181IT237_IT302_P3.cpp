@@ -6,7 +6,7 @@ int comb(int n,int k){
 }
 int main() {
     ofstream myfile;
-    myfile.open("181IT237_IT302_P2_Output_TC1.txt");
+    myfile.open("181IT237_IT302_P2_Output_TC6.txt");
 	cout << "Enter r: " << endl;
     int r;
     cin >> r;
@@ -36,11 +36,31 @@ int main() {
     }
     int c=1;
     int sum=0;
-    for(int i=r; i<=m; i++){
-        sum+= comb(i,r)*comb(m,i);
+    cout << "Here I printed the intermediate value as i : i ,comb(i,r) ,comb(m,i) ,sum of both" << endl;
+    myfile << "Here I printed the intermediate value as i : i ,comb(i,r) ,comb(m,i) ,sum of both" << endl;
+    for(int i=0; i<=n; i++){
+        if(i>=r && i<=m){
+            cout << "i=" << i << " " << comb(i,r) << " ";
+            cout << comb(m,i) << " ";
+            cout << comb(i,r)*comb(m,i) << endl;
+            sum+=comb(i,r)*comb(m,i);
+            myfile << "i=" << i << " " << comb(i,r) << " ";
+            myfile << comb(m,i) << " ";
+            myfile << comb(i,r)*comb(m,i) << endl;
+        }
+        else{
+            cout << "i="<< i << " Invalid Input"<< endl;
+            myfile << "i=" << i << " Invalid Input" << endl;
+        }
     }
-    cout << "The value of C: "<< (double)c/sum << endl;
-    myfile << "The value of C: "<< (double)c/sum;
+    if(sum==0){
+        cout << "Invalid Input"<< endl;
+        myfile << "Invalid Input";
+    }
+    else{
+        cout << "The value of C: "<< (double)c/sum << endl;
+        myfile << "The value of C: "<< (double)c/sum;
+    }
     myfile.close();
 	return 0;
 }
