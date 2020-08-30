@@ -1,0 +1,10 @@
+Joint probability function is equal to : (xCi)*(zCj)*(yC(n-i-j))/((x+y+z)Cn) 
+Joint Probability Function table: f(x,z) where 1st row is where x=0 and z varies from 0 to n
+|0.0549451  |0.123626  |0.0494505  |0.00274725  
+|0.206044  |0.247253  |0.0412088  |0  
+|0.164835  |0.0824176  |0  |0  
+|0.0274725  |0  |0  |0  
+Marginal distribution of X alone : 
+0.230769 0.494505 0.247253 0.0274725 
+Marginal distribution of Z alone : 
+0.453297 0.453297 0.0906593 0.00274725 

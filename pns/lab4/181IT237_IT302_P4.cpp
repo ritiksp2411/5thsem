@@ -53,6 +53,7 @@ int main() {
                 int ft=comb(x,i);
                 int st=comb(z,j);
                 int tt=comb(y,n-i-j);
+                
                 v[i][j]=(double)(ft*st*tt)/den;
             }
             else v[i][j]=0;
@@ -72,6 +73,30 @@ int main() {
             sum+=v[j][i];
         }
         marz[i]=sum;
+    }
+    cout << "Joint Probability Function table: f(x,z) where 1st row is where x=0 and z varies from 0 to n" << endl;
+    myfile << "Joint Probability Function table: f(x,z) where 1st row is where x=0 and z varies from 0 to n" << endl;
+    for(int i=0; i<=n; i++){
+        for(int j=0; j<=n; j++){
+            cout << "|  " << v[i][j] << "  ";
+            myfile << "|  " << v[i][j] << "  ";
+        }
+        cout << endl;
+        myfile << endl;
+    }
+    cout << "Marginal distribution of X alone : " << endl;
+    myfile << "Marginal distribution of X alone : " << endl;
+    for(int i=0; i<=n; i++){
+        cout << marx[i] << " ";
+        myfile << marx[i] << " ";
+    }
+    cout << endl;
+    myfile << endl;
+    cout << "Marginal distribution of Z alone : " << endl;
+    myfile << "Marginal distribution of Z alone : " << endl;
+    for(int i=0; i<=n; i++){
+        cout << marz[i] << " ";
+        myfile << marz[i] << " ";
     }
     myfile.close();
 	return 0;
