@@ -6,7 +6,7 @@ int comb(int n,int k){
 }
 int main() {
     ofstream myfile;
-    myfile.open("181IT237_IT302_P4_Output_TC6.txt");
+    myfile.open("181IT237_IT302_P4_Output_TC3.txt");
 	cout << "Enter n: " << endl;
     int n;
     cin >> n;
@@ -25,7 +25,7 @@ int main() {
         myfile.close();
         return 0;
     }
-    cout << "Enter y: " << endl;
+    cout << "Enter y: " << endl;    
     int y;
     cin >> y;
     if(y<=0){
@@ -43,8 +43,8 @@ int main() {
         myfile.close();
         return 0;
     }
-    cout << "Joint probability function is equal to : (xCi)*(zCj)*(yC(n-i-j))/((x+y+z)Cn) " << endl;
-    myfile << "Joint probability function is equal to : (xCi)*(zCj)*(yC(n-i-j))/((x+y+z)Cn) " << endl;
+    cout << "Joint probability function is equal to : (xCi)*(zCj)*(yC(n-i-j))/((x+y+z)Cn) where 0<=i+j<=n" << endl;
+    myfile << "Joint probability function is equal to : (xCi)*(zCj)*(yC(n-i-j))/((x+y+z)Cn) where 0<=i+j<=n" << endl;
     vector<vector<double>> v(n+1,vector<double>(n+1));
     int den=comb(x+y+z,n);
     for(int i=0; i<=n; i++){
@@ -53,8 +53,9 @@ int main() {
                 int ft=comb(x,i);
                 int st=comb(z,j);
                 int tt=comb(y,n-i-j);
-                
                 v[i][j]=(double)(ft*st*tt)/den;
+                cout << "No. of blue : No. of green ==> " << i << " : " << j << " ==> " << v[i][j] << endl;
+                myfile << "No. of blue : No. of green ==> " << i << " : " << j << " ==> " << v[i][j] << endl;
             }
             else v[i][j]=0;
         }
@@ -87,17 +88,19 @@ int main() {
     cout << "Marginal distribution of X alone : " << endl;
     myfile << "Marginal distribution of X alone : " << endl;
     for(int i=0; i<=n; i++){
-        cout << marx[i] << " ";
-        myfile << marx[i] << " ";
+        cout << "|  " << marx[i] << "  ";
+        myfile << "|  " << marx[i] << "  ";
     }
     cout << endl;
     myfile << endl;
     cout << "Marginal distribution of Z alone : " << endl;
     myfile << "Marginal distribution of Z alone : " << endl;
     for(int i=0; i<=n; i++){
-        cout << marz[i] << " ";
-        myfile << marz[i] << " ";
+        cout << "|  " << marz[i] << "  ";
+        myfile << "|  " << marz[i] << "  ";
     }
+    cout << endl;
+    myfile << endl;
     myfile.close();
 	return 0;
 }
