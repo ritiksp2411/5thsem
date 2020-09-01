@@ -11,7 +11,7 @@ void main()
         #pragma omp master
         {
             printf("Parallel Region 1 \n");
-            x=x+1;
+            x=x+9;
         }
         #pragma omp barrier
         if(tid==1) x=x+2;
