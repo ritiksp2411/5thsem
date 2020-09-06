@@ -21,36 +21,36 @@ int main()
     //     7,8,9
     // };
     t1=omp_get_wtime();
-    printf("Row sum is : ");
+    // printf("Row sum is : ");
     for(int i=0; i<n; i++){
         sum=0;
         #pragma omp parallel for schedule(static,8) reduction(+:sum)
         for(int j=0; j<n; j++) sum=sum+a[i][j];
-        printf("%d ",sum);
+        // printf("%d ",sum);
     }
-    printf("\n\nCol sum is : ");
+    // printf("\n\nCol sum is : ");
     for(int i=0; i<n; i++){
         sum=0;
         #pragma omp parallel for schedule(static,8) reduction(+:sum)
         for(int j=0; j<n; j++) sum=sum+a[j][i];
-        printf("%d ",sum);
+        // printf("%d ",sum);
     }
     t2=omp_get_wtime();
     printf("\n\ntime required in parallal :%f s",t2-t1);
     t1=omp_get_wtime();
-    printf("\n\nRow sum is : ");
+    // printf("\n\nRow sum is : ");
     for(int i=0; i<n; i++){
         sum=0;
         for(int j=0; j<n; j++) sum=sum+a[i][j];
-        printf("%d ",sum);
+        // printf("%d ",sum);
     }
-    printf("\n\nCol sum is : ");
+    // printf("\n\nCol sum is : ");
     for(int i=0; i<n; i++){
         sum=0;
         for(int j=0; j<n; j++) sum=sum+a[j][i];
-        printf("%d ",sum);
+        // printf("%d ",sum);
     }
     t2=omp_get_wtime();
-    printf("\n\ntime required in sequential :%f s",t2-t1);
+    printf("\n\ntime required in sequential :%f s\n",t2-t1);
     return 0;
 }
