@@ -1,9 +1,5 @@
 #include<bits/stdc++.h>
 using namespace std;
-int comb(int n,int k){  
-    if (k == 0 || k == n) return 1;  
-    return comb(n - 1, k - 1) + comb(n - 1, k);  
-}
 int main() {
     ofstream myfile;
     myfile.open("181IT237_IT302_P5_Output_TC3.txt");
@@ -43,8 +39,6 @@ int main() {
         myfile.close();
         return 0;
     }
-    cout << "Joint probability function is equal to : (xCi)*(zCj)*(yC(n-i-j))/((x+y+z)Cn) where 0<=i+j<=n" << endl;
-    myfile << "Joint probability function is equal to : (xCi)*(zCj)*(yC(n-i-j))/((x+y+z)Cn) where 0<=i+j<=n" << endl;
     vector<vector<double>> v(n+1,vector<double>(n+1));
     int den=comb(x+y+z,n);
     for(int i=0; i<=n; i++){
@@ -54,8 +48,6 @@ int main() {
                 int st=comb(z,j);
                 int tt=comb(y,n-i-j);
                 v[i][j]=(double)(ft*st*tt)/den;
-                cout << "No. of blue : No. of green ==> " << i << " : " << j << " ==> " << v[i][j] << endl;
-                myfile << "No. of blue : No. of green ==> " << i << " : " << j << " ==> " << v[i][j] << endl;
             }
             else v[i][j]=0;
         }
@@ -98,3 +90,10 @@ int main() {
 // Uy= sum for all y ( y * marginal(y) )
 
 // sum for all x,y ==> g (X, Y) = 2X^2 +Y^2 +2XY * f(x,y)
+
+// void sum(int a,int b){
+//     int avg=a+b;
+//     int sum=avg;
+//     avg=avg/2;
+//     cout << avg << " " << sum ;
+// }
