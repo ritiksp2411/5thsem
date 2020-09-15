@@ -5,19 +5,18 @@ bool wPrefersM1OverM(int prefer[2*N][N], int w, int m, int m1){
 	for (int i = 0; i < N; i++){
 		if (prefer[w][i] == m1) return true; 
 		if (prefer[w][i] == m) return false; 
-	} 
+	}
 }
 void stableMarriage(int prefer[2*N][N]){ 
-	int wPartner[N]; 
+	int wPartner[N];
 	bool mFree[N]; 
 	memset(wPartner, -1, sizeof(wPartner)); 
 	memset(mFree, false, sizeof(mFree)); 
 	int freeCount = N;  
-	while (freeCount > 0){ 
+	while(freeCount > 0){ 
 		int m; 
-		for (m = 0; m < N; m++) if (mFree[m] == false) break; 
-		for (int i = 0; i < N && mFree[m] == false; i++) 
-		{ 
+		for(m = 0; m < N; m++) if(mFree[m] == false) break; 
+		for(int i = 0; i < N && mFree[m] == false; i++){ 
 			int w = prefer[m][i];
 			if (wPartner[w-N] == -1){
 				wPartner[w-N] = m; 
@@ -30,7 +29,7 @@ void stableMarriage(int prefer[2*N][N]){
 					wPartner[w-N] = m; 
 					mFree[m] = true; 
 					mFree[m1] = false; 
-				} 
+				}
 			}
 		} 
     }
