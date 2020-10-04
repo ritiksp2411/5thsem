@@ -1,0 +1,2 @@
+Probability formula: NCB * (A/100)^B * (1-A/100)^(N-B)
+0.266828

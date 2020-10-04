@@ -1,4 +1,0 @@
-Mean of X is : 12
-Mean of Y is : 9
-Value G(x,y)=XY or E(XY) is : 37.6
-Covariance of the X and Y is : -70.4
