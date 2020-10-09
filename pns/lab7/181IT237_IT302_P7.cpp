@@ -12,15 +12,11 @@ double power(double a, double b){
     return a;
 }
 int main(){
-    ofstream myfile;
-    myfile.open("181IT237_IT302_P4_Output_TC3.txt");
 	cout << "Enter A: " << endl;
     int a;
     cin >> a;
-    if(a<=0){
+    if(a<=0 && a>100){
         cout << "Invalid Input"<< endl;
-        myfile << "Invalid Input";
-        myfile.close();
         return 0;
     }
     cout << "Enter B: " << endl;
@@ -28,8 +24,6 @@ int main(){
     cin >> b;
     if(b<=0){
         cout << "Invalid Input"<< endl;
-        myfile << "Invalid Input";
-        myfile.close();
         return 0;
     }
     cout << "Enter N: " << endl;    
@@ -37,18 +31,13 @@ int main(){
     cin >> n;
     if(n<b){
         cout << "Invalid Input"<< endl;
-        myfile << "Invalid Input";
-        myfile.close();
         return 0;
     }
     cout << "Probability formula: NCB * (A/100)^B * (1-A/100)^(N-B)"<< endl;
-    myfile << "Probability formula: NCB * (A/100)^B * (1-A/100)^(N-B)"<< endl;
     int NCB=comb(n,b);
     double ans=(double)NCB;
     ans=ans*power((double)a/100,b);
     ans=ans*power((double)(100-a)/100,n-b);
-    cout << ans << endl;
-    myfile << ans << endl;
-    myfile.close();
+    cout << "Required Probability is " << ans << endl;
 	return 0;
 }

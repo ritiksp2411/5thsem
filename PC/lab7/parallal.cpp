@@ -7,10 +7,10 @@
 #include <omp.h>
 using namespace std;
 using namespace std::chrono;
+int num_cluster = 8;
+int max_iterations = 5;
 double max_range = 1000;
 int num_point = 1000;
-int num_cluster = 4;
-int max_iterations = 5;
 vector<Point> init_point(int num_point);
 vector<Cluster> init_cluster(int num_cluster);
 void compute_distance(vector<Point> &points, vector<Cluster> &clusters);
@@ -18,25 +18,37 @@ double euclidean_dist(Point point, Cluster cluster);
 bool update_clusters(vector<Cluster> &clusters);
 void draw_chart_gnu(vector<Point> &points);
 
-int main() {
-    srand(time(NULL));
+int main(){
     printf("Number of points %d\n", num_point);
     printf("Number of clusters %d\n", num_cluster);
+    printf("Number of processors: %d\n", omp_get_num_procs());
+    srand(int(time(NULL)));
     double time_point1 = omp_get_wtime();
     printf("Starting initialization..\n");
-    printf("Creating points..\n");
-    vector<Point> points = init_point(num_point);
-    printf("Points initialized \n");
-    printf("Creating clusters..\n");
-    vector<Cluster> clusters = init_cluster(num_cluster);
-    printf("Clusters initialized \n");
+    vector<Point> points;
+    vector<Cluster> clusters;
+    #pragma omp parallel
+    {
+        #pragma omp sections
+        {
+            #pragma omp section
+            {
+                printf("Creating points..\n");
+                points = init_point(num_point);
+            }
+            #pragma omp section
+            {
+                printf("Creating clusters..\n");
+                clusters = init_cluster(num_cluster);
+            }
+        }
+    }
     double time_point2 = omp_get_wtime();
-    auto duration = time_point2 - time_point1;
+    double duration = time_point2 - time_point1;
     printf("Points and clusters generated in: %f seconds\n", duration);
     bool conv = true;
     int iterations = 0;
-    printf("Starting iterate..\n");
-    //The algorithm stops when iterations > max_iteration or when the clusters didn't move
+    printf("Starting to iterate...\n");
     while(conv && iterations < max_iterations){
         iterations ++;
         compute_distance(points, clusters);
@@ -45,18 +57,16 @@ int main() {
     }
     double time_point3 = omp_get_wtime();
     duration = time_point3 - time_point2;
-    printf("Number of iterations: %d, total time: %f seconds, time per iteration: %f seconds\n", iterations, duration, duration/iterations);
+    printf("Number of iterations: %d, total time: %f seconds, time per iteration: %f seconds\n",iterations, duration, duration/iterations);
     try{
         printf("Drawing the chart...\n");
         draw_chart_gnu(points);
     }
     catch(int e){
-        printf("Chart not available, gnuplot not found");
+        printf("Gnuplot not found");
     }
     return 0;
 }
-
-//Initialize num_point Points
 vector<Point> init_point(int num_point){
     vector<Point> points(num_point);
     Point *ptr = &points[0];
@@ -66,8 +76,6 @@ vector<Point> init_point(int num_point){
     }
     return points;
 }
-
-//Initialize num_cluster Clusters
 vector<Cluster> init_cluster(int num_cluster){
     vector<Cluster> clusters(num_cluster);
     Cluster* ptr = &clusters[0];
@@ -77,37 +85,37 @@ vector<Cluster> init_cluster(int num_cluster){
     }
     return clusters;
 }
-
-//For each Point, compute the distance between each Cluster and assign the Point to the nearest Cluster
-//The distance is compute through Euclidean Distance
 void compute_distance(vector<Point> &points, vector<Cluster> &clusters){
     unsigned long points_size = points.size();
     unsigned long clusters_size = clusters.size();
     double min_distance;
     int min_index;
-    for(int i = 0; i < points_size; i++){
-        Point &point = points[i];
-        min_distance = euclidean_dist(point, clusters[0]);
-        min_index = 0;
-        for(int j = 1; j < clusters_size; j++){
-            Cluster &cluster = clusters[j];
-            double distance = euclidean_dist(point, cluster);
-            if(distance < min_distance){
-                min_distance = distance;
-                min_index = j;
+    #pragma omp parallel default(shared) private(min_distance, min_index) firstprivate(points_size, clusters_size)
+    {
+        #pragma omp for schedule(guided,10)
+        for (int i = 0; i < points_size; i++){
+            Point &point = points[i];
+            min_distance = euclidean_dist(point, clusters[0]);
+            min_index = 0;
+            for (int j = 1; j < clusters_size; j++) {
+                Cluster &cluster = clusters[j];
+                double distance = euclidean_dist(point, cluster);
+                if (distance < min_distance){
+                    min_distance = distance;
+                    min_index = j;
+                }
             }
+            point.set_cluster_id(min_index);
+            clusters[min_index].add_point(point);
         }
-        points[i].set_cluster_id(min_index);
-        clusters[min_index].add_point(points[i]);
     }
 }
 
 double euclidean_dist(Point point, Cluster cluster){
-    double distance = sqrt(pow(point.get_x_c() - cluster.get_x_coord(),2) + pow(point.get_y_c() - cluster.get_y_coord(), 2));
+    double distance = sqrt(pow(point.get_x_c() - cluster.get_x_coord(),2) +pow(point.get_y_c() - cluster.get_y_coord(),2));
     return distance;
 }
 
-//For each cluster, update the coords. If only one cluster moves, conv will be TRUE
 bool update_clusters(vector<Cluster> &clusters){
     bool conv = false;
     for(int i = 0; i < clusters.size(); i++){
@@ -117,7 +125,6 @@ bool update_clusters(vector<Cluster> &clusters){
     return conv;
 }
 
-//Draw point plot with gnuplot
 void draw_chart_gnu(vector<Point> &points){
     ofstream outfile("data.txt");
     for(int i = 0; i < points.size(); i++){
